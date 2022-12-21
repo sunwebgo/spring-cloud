@@ -1,0 +1,58 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway-9527
+  cloud:
+    gateway:
+      #      开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: payment_route1
+          #uri的协议为lb，表示启动Gateway的负载均衡功能
+          uri: lb://CLOUD-PROVIDER-SERVER
+          predicates:
+            - Path=/payment/getPaymentById/**
+#            - After=2022-12-17T11:59:57.329+08:00[Asia/Shanghai]
+#            - Cookie=username,zyx
+#            #请求头中要有X-Request-Id属性，并且值为整数
+#            - Header=X-Request-Id, \d+
+#            - Host=**.xha.com
+#            - Method=GET
+#            - Query=username, \d+
+
+        - id: payment_route2
+          uri: lb://CLOUD-PROVIDER-SERVER
+          predicates:
+            - Path=/payment/discovery/**
+
+
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: 8001_payment_route1             #路由的ID，没有固定规则但要求要唯一，建议配合服务名
+#          uri: http://localhost:8001     #匹配后提供服务的路由地址
+#          predicates:
+#            - Path=/payment/getPaymentById/**  #断言，路径相匹配的进行路由
+#
+#        - id: 8001_payment_route2
+#          uri: http://localhost:8001
+#          predicates:
+#            - Path=/payment/discovery/**
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: cloud-gateway-9527
+  client:
+    #表示是否将自己注册进EurekaServer默认为true。
+    register-with-eureka: true
+    #是否从EurekaServer抓取已有的注册信息，默认为true。单节点无所谓，集群必须设置为true才能配合ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+

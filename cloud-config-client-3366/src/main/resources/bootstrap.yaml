@@ -1,0 +1,38 @@
+server:
+  port: 3366
+spring:
+  application:
+    name: cloud-config-client
+  cloud:
+    config:
+      label: master #    分支名
+      name: config  #    配置文件名称
+      profile: dev  #    后缀名称
+      uri: http://localhost:3344 #    config配置中心地址
+  #   上述3个综合：master分支上config-dev.yml的配置文件被读取http://localhost:3344/master/config-dev.yml
+  rabbitmq:
+    host: 192.168.26.142
+    port: 5672
+    username: guest
+    password: guest
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+eureka:
+  instance:
+    #    是否显示ip
+    prefer-ip-address: true
+    #    实例id
+    instance-id: cloud-config-client-3366
+  client:
+    #    是否将自己注册进EurekaServer
+    register-with-eureka: true
+    #    是否从Eureka中抓取已有的注册信息
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka

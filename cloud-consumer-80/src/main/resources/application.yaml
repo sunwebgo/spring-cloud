@@ -1,0 +1,20 @@
+server:
+  port: 80
+
+#子模块名称
+spring:
+  application:
+    name: cloud-consumer-server
+
+eureka:
+  client:
+    #    是否将当前模块注册进Eureka注册中心
+    register-with-eureka: true
+    #    是否抓取在EurekaServer中已经存在的注册信息
+    fetch-registry: true
+    #    Eureka服务地址
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+  instance:
+    instance-id: cloud-consumer-server-80
+    prefer-ip-address: true
